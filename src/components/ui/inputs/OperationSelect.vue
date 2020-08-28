@@ -1,16 +1,16 @@
 <template>
-  <div class="elementContainer" :class="[{ selected: options }]">
-    <div class="box" @click="options = !options">
-      <div class="caption" v-if="caption" v-text="caption"/>
-      <div class="input">{{ valueLabel }}</div>
+  <div class="element element-block" :class="[{ 'element_selected': options }]">
+    <div class="element__box" @click="options = !options">
+      <div class="element__caption" v-if="caption" v-text="caption"/>
+      <div class="element__input">{{ valueLabel }}</div>
     </div>
-    <img src="img/DropdownIcon.png"/>
-    <div class="options" v-if="options">
-      <div class="option"
+    <img class="element__img" src="img/DropdownIcon.png"/>
+    <div class="element__options options" v-if="options">
+      <div class="options__item"
         v-for="(varible, index) in filterVaribles"
         :key="index"
         @click="setValue(varible.value)"
-        :class="[{ selected: postValue === varible.value }]"
+        :class="[{ 'options__item_selected': postValue === varible.value }]"
         v-text="varible.label"/>
     </div>
   </div>
@@ -70,62 +70,66 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.elementContainer {
+.element {
   display: inline-flex;
   align-content: center;
   align-items: center;
   box-sizing: border-box;
-  padding: 1em;
-  width: 100%;
   position: relative;
   cursor: pointer;
 
-  &.selected {
+  &-block {
+    padding: 16px;
+    width: 100%;
+  }
+
+  &-selected {
     background-color: var(--color-puregray);
     border-bottom: 1px solid rgba(black, 0.03)
   }
 
-  .box {
+  &__box {
     width: 100%;
 
     & > *:not(:last-child) {
-      margin-right: 0.5em;
-    }
-
-    input, .input {
-      font-size: 13px;
-      border: none;
-      background-color: transparent;
-      padding: 0;
-
-      &:focus {
-        outline: none;
-      }
+      margin-right: 8px;
     }
   }
-}
 
-.caption {
-  text-transform: uppercase;
-  margin-bottom: 1em;
-  font-size: 8px;
-  font-weight: 500;
-  opacity: 0.7;
+  &__input {
+    font-size: 13px;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__caption {
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-size: 8px;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+
+  &__options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+  }
 }
 
 .options {
   display: block;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: white;
-  box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.25);
-  z-index: 10;
 
-  .option {
+  &__item {
     display: block;
-    padding: 0.75em 1em;
+    padding: 12px 16px;
     font-size: 13px;
     background-color: var(--color-puregray);
     cursor: pointer;

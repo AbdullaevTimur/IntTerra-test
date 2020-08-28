@@ -1,6 +1,6 @@
 <template>
-  <div class="elementContainer">
-    <textarea v-model="postValue" :placeholder="placeholder"/>
+  <div class="element">
+    <textarea class="element__textarea" v-model="postValue" :placeholder="placeholder"/>
   </div>
 </template>
 
@@ -17,10 +17,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.elementContainer {
+.element {
   width: 100%;
 
-  textarea {
+  &__textarea {
     width: 100%;
     font-family: 'Ubuntu';
     padding: 0;

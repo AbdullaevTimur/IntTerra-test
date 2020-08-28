@@ -1,22 +1,22 @@
 <template>
   <div class="page">
-    <div class="header" v-if="hasHeaderData || enableHeader">
+    <div class="page__header" v-if="hasHeaderData || enableHeader">
       <slot name="header"/>
     </div>
-    <div class="main">
-      <div class="sidebar" v-if="hasSidebarData || enableSidebar">
+    <div class="page__main main">
+      <div class="main__sidebar" v-if="hasSidebarData || enableSidebar">
         <slot name="sidebar"/>
       </div>
-      <div class="content">
+      <div class="main__content">
         <slot/>
       </div>
     </div>
-    <div class="subpage" v-if="hasChildData">
-      <div class="overlay"/>
-      <div class="exit">
-        <Crosshair class="exit" @click.native="goBack"/>
+    <div class="page__subpage subpage" v-if="hasChildData">
+      <div class="subpage__overlay"/>
+      <div class="subpage__exit">
+        <Crosshair @click.native="goBack"/>
       </div>
-      <div class="modal">
+      <div class="subpage__modal">
         <slot name="child"></slot>
       </div>
     </div>
@@ -78,17 +78,6 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">
-.subpage {
-  .modal {
-    .scroll-container {
-      overflow: hidden !important;
-      overflow-y: hidden !important !important;
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .page {
   display: flex;
@@ -101,15 +90,15 @@ export default Vue.extend({
   overflow: hidden;
   flex-direction: column;
 
-  .header {
+  &__header {
     order: 1;
     flex-grow: 0;
     flex-shrink: 0;
     background-color: var(--color-darkblue);
-    min-height: 5em;
+    min-height: 80px;
   }
 
-  .main {
+  &__main {
     order: 2;
     flex-grow: 1;
     flex-shrink: 1;
@@ -121,60 +110,64 @@ export default Vue.extend({
     max-height: 100%;
     width: 950px;
     background-color: #F9F9F9;
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
+  }
 
-    .sidebar {
-      order: 1;
-      min-width: 5em;
-      width: 5em;
-      background-color: var(--color-lightgray);
-    }
-    .content {
-      order: 2;
-      width: 100%;
-      padding: 1.5em;
-      background-color: white;
-    }
+  &__subpage {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+  }
+}
+
+.main {
+  &__sidebar {
+    order: 1;
+    min-width: 80px;
+    width: 80px;
+    background-color: var(--color-lightgray);
+  }
+
+  &__content {
+    order: 2;
+    width: 100%;
+    padding: 24px;
+    background-color: white;
   }
 }
 
 .subpage {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10;
-
-  .overlay {
+  &__overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: rgba(black, 0.7);
-    pointer-events: none !important;
+    pointer-events: none;
+    z-index: -1;
   }
 
-  .exit {
+  &__modal {
+    display: inline-block;
+    background-color: white;
+    width: 320px;
+    min-height: 100%;
+    max-height: 100%;
+  }
+
+  &__exit {
     display: inline-block;
     position: absolute;
     top: 0;
     right: 0;
-    padding: 2rem;
-  }
-
-  .modal {
-    display: inline-block;
-    background-color: white;
-    width: 20em;
-    min-height: 100%;
-    max-height: 100%;
-    position: relative;
-    overflow-y: auto;
+    padding: 32px;
   }
 }
 </style>

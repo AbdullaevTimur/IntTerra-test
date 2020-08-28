@@ -1,12 +1,13 @@
 <template>
-  <div class="elementContainer">
-    <div class="caption" v-if="caption" v-text="caption"/>
-    <div class="box">
+  <div class="element">
+    <div class="element__caption" v-if="caption" v-text="caption"/>
+    <div class="element__box">
       <div
+        class="element__variant variant"
         v-for="(varible, index) in varibles"
         :key="index"
         @click="postValue = varible.value"
-        :class="[{ selected: postValue === varible.value }, varible.key.toLowerCase()]">
+        :class="[{ 'variant__selected': postValue === varible.value }, `variant__selected_${varible.key.toLowerCase()}`]">
           <span v-text="varible.label"/>
         </div>
     </div>
@@ -46,18 +47,18 @@ export default Vue.extend({
   }
 }
 
-.elementContainer {
+.element {
   position: relative;
   width: 100%;
 
-  .caption {
+  &__caption {
     text-transform: uppercase;
-    margin-bottom: 1em;
+    margin-bottom: 16px;
     font-size: 11px;
     font-weight: 500;
   }
 
-  .box {
+  &__box {
     display: inline-flex;
     position: relative;
     justify-content: center;
@@ -69,57 +70,57 @@ export default Vue.extend({
     border-radius: 20px;
     height: 40px;
     background-color: var(--color-puregray);
-    box-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.125);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.125);
+  }
 
-    & > * {
-      display: inline-flex;
-      box-sizing: border-box;
-      justify-content: center;
-      align-content: center;
-      align-items: center;
-      width: calc(100% / 3);
-      flex-grow: 1;
-      padding: 0.5em 1em;
-      cursor: pointer;
+  &__variant {
+    display: inline-flex;
+    box-sizing: border-box;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: calc(100% / 3);
+    flex-grow: 1;
+    padding: 8px 16px;
+    cursor: pointer;
 
-      span {
-        display: inline-block;
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        text-transform: uppercase;
-        text-overflow: ellipsis;
-        text-align: center;
-        font-size: 11px;
-        font-weight: 500;
-      }
-
-      &:hover {
-        background-color: var(--color-lightgray);
-      }
-
-      &:not(:last-child) {
-        border-right: 1px solid rgba(black, 0.1);
-      }
-
-      &.selected {
-        &.badly, &.excellent {
-          color: white;
-        }
-
-        &.excellent {
-          @include shema(var(--color-green));
-        }
-
-        &.satisfactorily {
-          @include shema(var(--color-lightorange));
-        }
-
-        &.badly {
-          @include shema(var(--color-red));
-        }
-      }
+    span {
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-transform: uppercase;
+      text-overflow: ellipsis;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
     }
+
+    &:hover {
+      background-color: var(--color-lightgray);
+    }
+
+    &:not(:last-child) {
+      border-right: 1px solid rgba(black, 0.1);
+    }
+  }
+}
+
+.variant__selected {
+  &.variant__selected_badly, &.variant__selected_excellent {
+    color: white;
+  }
+
+  &.variant__selected_excellent {
+    @include shema(var(--color-green));
+  }
+
+  &.variant__selected_satisfactorily {
+    @include shema(var(--color-lightorange));
+  }
+
+  &.variant__selected_badly {
+    @include shema(var(--color-red));
   }
 }
 </style>

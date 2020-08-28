@@ -1,43 +1,43 @@
 <template>
-  <div class="container">
-    <div class="content">
-      <div class="block">
-        <div class="headline">{{ labels.headline[$route.meta.method] }}</div>
+  <div class="form">
+    <div class="form__content">
+      <div class="form__block">
+        <div class="form__headline headline">{{ labels.headline[$route.meta.method] }}</div>
       </div>
-      <div class="block info" v-if="$route.params && $route.params.parent">
+      <div class="block block_padding block_space-between" v-if="$route.params && $route.params.parent">
         <div class="meta">
-          <div class="status"/>
-          <div class="title">
-            <div class="type">{{ $route.params.parent.type }}</div>
-            <div class="number">{{ $route.params.parent.id }}</div>
+          <div class="meta__status"/>
+          <div class="meta__title">
+            <div class="meta__type">{{ $route.params.parent.type }}</div>
+            <div class="meta__number">{{ $route.params.parent.id }}</div>
           </div>
         </div>
 
         <div class="culture">
-          <div class="title">
-            <div class="type">{{ labels.culture.type }}</div>
-            <div class="address">{{ labels.culture.address }}</div>
+          <div class="culture__title">
+            <div class="culture__type">{{ labels.culture.type }}</div>
+            <div class="culture__address">{{ labels.culture.address }}</div>
           </div>
-          <div class="image">
+          <div class="culture__image">
             <img src="img/CropCorn.png"/>
           </div>
         </div>
       </div>
-      <div class="block negative-margin">
-        <OperationSelect v-model="model.type"/>
+      <div class="block">
+        <OperationSelect class="block__row" v-model="model.type"/>
       </div>
-      <div class="block info equal negative-margin">
+      <div class="block block_space-between block_equal">
         <DatetimePicker v-model="model.date"/>
         <AreaInput v-model="model.area" :placeholder="labels.placeholder.area"/>
       </div>
-      <div class="block">
-        <CommentTextarea v-model="model.comment" :placeholder="labels.placeholder.comment"/>
+      <div class="block block_padding">
+        <CommentTextarea class="block__row" v-model="model.comment" :placeholder="labels.placeholder.comment"/>
       </div>
-      <div class="block">
-        <AssessmentSelect v-model="model.assessment"/>
+      <div class="block block_padding">
+        <AssessmentSelect class="block__row" v-model="model.assessment"/>
       </div>
     </div>
-    <div class="menu">
+    <div class="form__menu">
       <div class="but" @click="save">{{ labels.button[$route.meta.method] }}</div>
     </div>
   </div>
@@ -139,12 +139,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.headline {
-  font-size: 21px;
-  font-weight: 500;
-}
-
-.container {
+.form {
   display: flex;
   flex-direction: column;
   justify-content: stretch;
@@ -152,7 +147,11 @@ export default Vue.extend({
   max-height: 100vh;
   overflow: hidden;
 
-  .content {
+  &__headline {
+    padding: 16px;
+  }
+
+  &__content {
     order: 1;
     flex-grow: 1;
     flex-shrink: 1;
@@ -160,48 +159,55 @@ export default Vue.extend({
     overflow-y: auto;
   }
 
-  .menu {
+  &__menu {
     order: 2;
     flex-grow: 0;
     flex-shrink: 0;
+  }
+}
 
-    .but {
-      display: flex;
-      width: 100%;
-      height: 60px;
-      justify-content: center;
-      align-items: center;
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      background-color: var(--color-green);
-      color: white;
-      cursor: pointer;
+.headline {
+  font-size: 21px;
+  font-weight: 500;
+}
 
-      &:hover {
-        background-color: darken(#66CC66, 10);
-      }
-    }
+.but {
+  display: flex;
+  width: 100%;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  background-color: var(--color-green);
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken(#66CC66, 10);
   }
 }
 
 .block {
-  padding: 1em;
-
   &:not(:last-child) {
     border: 1px solid rgba(black, 0.03);
   }
 
-  &.negative-margin {
-    margin: -1em;
+  &__row {
+    width: 100%;
   }
-}
 
-.info {
-  display: flex;
-  justify-content: space-between;
+  &_padding {
+    padding: 16px;
+  }
 
-  &.equal {
+  &_space-between {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_equal {
     & > * {
       flex-grow: 1;
       width: 50%;
@@ -215,10 +221,10 @@ export default Vue.extend({
   align-items: center;
 
   & > *:not(:last-child) {
-    margin-right: 0.5em;
+    margin-right: 8px;
   }
 
-  .status {
+  &__status {
     display: inline-block;
     width: 27px;
     height: 27px;
@@ -226,17 +232,17 @@ export default Vue.extend({
     border: 1px solid var(--color-green);
   }
 
-  .title {
+  &__title {
     font-weight: 500;
   }
 
-  .type {
+  &__type {
     font-size: 9px;
     text-transform: uppercase;
-    line-height: 1.5em;
+    line-height: 24px;
   }
 
-  .number {
+  &__number {
     font-size: 15px;
   }
 }
@@ -247,19 +253,19 @@ export default Vue.extend({
   text-align: right;
 
   & > *:not(:last-child) {
-    margin-right: 0.5em;
+    margin-right: 8px;
   }
 
-  .type {
+  &__type {
     font-weight: normal;
     font-size: 15px;
   }
 
-  .address {
+  &__address {
     font-weight: 500;
     font-size: 9px;
     text-transform: uppercase;
-    line-height: 1.5em;
+    line-height: 24px;
     opacity: 0.7;
   }
 }

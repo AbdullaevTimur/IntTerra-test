@@ -1,6 +1,6 @@
 <template>
   <div class="crosshair">
-    <span class="icon"/>
+    <span class="crosshair__icon"/>
   </div>
 </template>
 
@@ -20,16 +20,16 @@ export default Vue.extend({
 }
 
 $lineWidth: 4px;
-$iconWidth: 1.75em;
-$iconBox: 1.5em;
+$iconWidth: 28px;
+$iconBox: 24px;
 
 .crosshair {
   display: inline-block;
-  width: 1.5em;
-  height: 1.5em;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 
-  .icon {
+  &__icon {
     display: inline-block;
     position: relative;
     width: $iconBox;

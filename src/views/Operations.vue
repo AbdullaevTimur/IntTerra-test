@@ -1,61 +1,62 @@
 <template>
-  <Page :slim="true">
+  <Page class="page" :slim="true">
     <template slot="default">
       <div class="headline">{{ `${labels.headline} ${params.parent.id}` }}</div>
-      <div class="toolbar">
-        <div class="triggers">
+      <div class="page__toolbar toolbar">
+        <div class="toolbar__triggers-group">
           <div
             v-for="(but, index) in buttons"
             :key="index"
-            class="trigger"
-            :class="[{ selected: triggers[but.trigger] }]"
+            class="toolbar__trigger"
+            :class="[{ 'toolbar__trigger_selected': triggers[but.trigger] }]"
             @click="switchTrigger(but.trigger)"
             v-text="but.text"
           />
         </div>
-        <div class="controls">
+        <div class="toolbar__controls-group">
           <But @click.native="$router.push({ name: 'OperationAdd', params })" icon="plus">{{ labels.button.add }}</But>
         </div>
       </div>
-      <table class="operations">
-        <thead>
-          <td @click="sortByColumn('date')">
+      <div class="page__table table">
+        <div class="table__head table-head">
+          <div class="table__column table-head__column" @click="sortByColumn('date')">
             <span>{{ labels.column.date }}</span>
-            <span class="tringle" :class="[{ selected: sortBy.column === 'date' }]"/>
-          </td>
-          <td @click="sortByColumn('type')">
+            <span class="tringle" :class="[{ 'tringle_selected': sortBy.column === 'date' }]"/>
+          </div>
+          <div class="table__column table-head__column" @click="sortByColumn('type')">
             <span>{{ labels.column.operation }}</span>
-            <span class="tringle" :class="[{ selected: sortBy.column === 'operationTypeTranslation' }]"/>
-          </td>
-          <td>
+            <span class="tringle" :class="[{ 'tringle_selected': sortBy.column === 'operationTypeTranslation' }]"/>
+          </div>
+          <div class="table__column table-head__column">
             <span>{{ labels.column.culture }}</span>
-          </td>
-          <td @click="sortByColumn('assessment')">
+          </div>
+          <div class="table__column table-head__column" @click="sortByColumn('assessment')">
             <span>{{ labels.column.assessment }}</span>
-            <span class="tringle" :class="[{ selected: sortBy.column === 'assessment' }]"/>
-          </td>
-        </thead>
-        <tbody>
-          <tr
+            <span class="tringle" :class="[{ 'tringle_selected': sortBy.column === 'assessment' }]"/>
+          </div>
+        </div>
+        <div class="table__body table-body">
+          <div
+            class="table__row table__row_selectable"
             v-for="(item, index) in computedOpertaions"
             :key="index"
             @click="$router.push({ name: 'OperationEdit', params: { id: item.id, ...params } })">
-            <td>{{ convertDatetime(item.date, { unix: false }) }}</td>
-            <td class="primary">{{ translationClass[OperationTypeClass[item.type]] }}</td>
-            <td>
+            <div class="table__column">{{ convertDatetime(item.date, { unix: false }) }}</div>
+            <div class="table__column table__column_primary">{{ translationClass[OperationTypeClass[item.type]] }}</div>
+            <div class="table__column">
               <div class="culture">
-                <img src="img/CropCorn.png"/>
-                <span>{{ labels.culture.default  }}</span>
+                <img class="culture__img" src="img/CropCorn.png"/>
+                <span class="culture__label">{{ labels.culture.default  }}</span>
               </div>
-            </td>
-            <td class="assessment" :class="[{ 'empty': item.assessment === null }]">
-              <span class="bullet" :class="['assessment-' + item.assessment]"></span>
+            </div>
+            <div class="table__column assessment" :class="[{ 'assessment_empty': item.assessment === null }]">
+              <span class="assessment__bullet" :class="['assessment_bullet' + item.assessment]"></span>
               <!-- <span>{{ item.assessment !== null ? item.assessmentTranslation : 'Нет оценки' }}</span> -->
               <span>{{ item.assessment !== null ? translationClass[AssessmentClass[item.assessment]] : 'Нет оценки' }}</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
     <!-- Модальное окно -->
     <template class="view" slot="child" v-if="params.collection">
@@ -238,6 +239,16 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+  .page {
+    &__table {
+      width: 100%;
+    }
+
+    &__toolbar {
+      margin: 16px 0;
+    }
+  }
+
   .headline {
     font-weight: 500;
     font-size: 25px;
@@ -247,27 +258,27 @@ export default Vue.extend({
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1em 0;
-  }
 
-  .trigger {
-    text-transform: uppercase;
-    display: inline;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 500;
+    &__trigger {
+      text-transform: uppercase;
+      display: inline;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      margin: 16px 0;
 
-    &:not(:last-child) {
-      margin-right: 1em;
-    }
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
 
-    &.selected {
-      color: var(--color-blue);
+      &_selected {
+        color: var(--color-blue);
+      }
     }
   }
 
   .assessment {
-    &.empty {
+    &_empty {
       opacity: 0.3;
 
       .bullet {
@@ -275,71 +286,82 @@ export default Vue.extend({
       }
     }
 
-    .bullet {
+    &__bullet {
       display: inline-block;
       width: 12px;
       height: 6px;
       border-radius: 3px;
-      margin-right: 0.5em;
+      margin-right: 8px;
     }
 
-    .assessment-0 {
+    &__bullet_0 {
       background-color: green;
     }
 
-    .assessment-1 {
+    &__bullet_1 {
       background-color: yellow;
     }
 
-    .assessment-2 {
+    &__bullet_2 {
       background-color: red;
     }
   }
 
-  .operations {
-    width: 100%;
-    border-spacing: 0;
+  .table-head {
+    &__column {
+      font-weight: 500;
+      cursor: pointer;
 
-    thead {
-      background-color: var(--color-lightgray);
-
-      td {
-        font-size: 11px;
-        font-weight: 500;
-        cursor: pointer;
-
-        span:not(:last-child) {
-          margin-right: 0.5em;
-        }
+      span:not(:last-child) {
+        margin-right: 8px;
       }
     }
+  }
 
-    tbody {
-      tr {
+  .table-body {
+    &__column {
+      font-weight: normal;
+      border-bottom: 1px solid var(--color-lightgray);
+    }
+  }
+
+  .table {
+    display: table;
+    border-spacing: 0;
+
+    &__head {
+      display: table-header-group;
+      background-color: var(--color-lightgray);
+    }
+
+    &__body {
+      display: table-row-group;
+    }
+
+    &__row {
+      display: table-row;
+
+      &_selectable {
         cursor: pointer;
 
         &:hover {
-          td {
+          .table__column {
             background-color: var(--color-puregray);
           }
         }
       }
+    }
 
-      td {
-        font-weight: normal;
-        border-bottom: 1px solid var(--color-lightgray);
-        font-size: 11px;
-      }
+    &__column {
+      display: table-cell;
+      padding: 16px 12px;
+      vertical-align: middle;
+      font-size: 11px;
 
-      .primary {
+      &_primary {
         font-weight: 500;
         font-size: 13px;
       }
-    }
-
-    td {
-      padding: 1em 0.75em;
-      vertical-align: middle;
     }
   }
 
@@ -348,13 +370,13 @@ export default Vue.extend({
     align-items: center;
 
     & > *:not(:last-child) {
-      margin-right: 0.75em;
+      margin-right: 12px;
     }
   }
 
   .tringle {
     position: relative;
-    top: 0.9375em;
+    top: 11px;
     width: 0;
     height: 0;
     border: 0 solid transparent;
@@ -362,7 +384,7 @@ export default Vue.extend({
     border-right-width: 5px;
     border-top: 5px solid #A7A9AC;
 
-    &.selected {
+    &_selected {
       border-top-color: var(--color-blue);
     }
   }
